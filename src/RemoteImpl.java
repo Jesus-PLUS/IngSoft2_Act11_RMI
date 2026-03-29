@@ -1,8 +1,12 @@
 // implementacion
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.Random;
 
 public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface{
     // 'java.rmi.server.UnicastRemoteObject'
@@ -17,8 +21,14 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface{
     }
 
     @Override
-    public void createCount(String userName, int userCount, double initialBalance) throws RemoteException{
-        counts.put(userCount, new Cuenta(userName, userCount, initialBalance));
+    public int createCount(String userName, double initialBalance) throws RemoteException{
+        Random randCount = new Random();
+
+        int genNumber = randCount.nextInt(90000) + 10000;
+        counts.put(genNumber, new Cuenta(userName, genNumber, initialBalance));
+
+        return genNumber;
+
     }
 
     @Override
@@ -43,4 +53,14 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteInterface{
         c.setBalance(prevBalance - amount);
         return "Retiro exitoso. Saldo Inicial: " + prevBalance + " | Saldo Final: " + c.getBalance();
     }
+
+    private void guardarDatos() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("cuentas.ser"))) {
+            oos.writeObject(counts);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+

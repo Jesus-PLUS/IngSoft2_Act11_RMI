@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class Server {
     public static void main(String[] args){
+
         try{
             // cliente
             // referencia a la interfaz mediante el registro RMI

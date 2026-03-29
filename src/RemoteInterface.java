@@ -7,7 +7,12 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RemoteInterface extends Remote {
-    void createCount(String userName, int userCount, double initialBalance) throws RemoteException;
+    int createCount(String userName, double initialBalance) throws RemoteException;
+
+
+
     String deposit(int userCount, double amount) throws RemoteException;
     String withdraw(int userCount, double amount) throws RemoteException;
+
+
 }
